@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private SpriteRenderer renderer;
     [SerializeField] private Light light;
     [SerializeField] private PlayerMovement movementController;
+    [SerializeField] private PhysicsMaterial2D materialToPreventWallStuck;
 
     [Header("Stats")]
     [SerializeField] private float lives = 3; //each hit = 0.5f or 0.25f damage
@@ -85,6 +86,15 @@ public class Player : MonoBehaviour
                 AudioController.instance.Stop(AudioController.Source.SFX);
                 isClipPlaying = false;
             }
+        }
+
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            this.GetComponent<Rigidbody2D>().sharedMaterial = materialToPreventWallStuck;
+        }
+        else
+        {
+            this.GetComponent<Rigidbody2D>().sharedMaterial = null;
         }
 
         if (collision.gameObject.CompareTag("MovingPlatform"))
